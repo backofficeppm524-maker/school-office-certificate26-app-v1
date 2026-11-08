@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Office Certificate App</title>
+  <script src="vendor/xlsx.full.min.js"></script>
+  <script src="config.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="login-dashboard.css">
+  <script src="script.js" defer></script>
+  <script src="dashboard.js" defer></script>
+</head>
+<body class="app-body">
+  <div class="app-backdrop" aria-hidden="true">
+    <div class="backdrop-orb orb-one"></div>
+    <div class="backdrop-orb orb-two"></div>
+    <div class="backdrop-orb orb-three"></div>
+    <div class="backdrop-grid"></div>
+  </div>
+
+  <section id="master-login" class="login-screen ov-login">
+    <div class="ov-login__art">
+      <div class="ov-brand"><span class="ov-brand__mark">OC</span><span>Office Certificate</span></div>
+      <div>
+        <h1>School certificates, ready to print in minutes.</h1>
+        <p>Bonafide, conduct and attendance certificates from your student records, with A4 layouts that print exactly as you see them.</p>
+      </div>
+      <div class="ov-sheet" aria-hidden="true"><small>GOVERNMENT OF TAMIL NADU</small><b>Certificate</b><i></i><i></i><i></i><em>OC</em></div>
+    </div>
+    <div class="ov-login__panel">
+      <div class="ov-card">
+        <h2>Welcome back</h2>
+        <p>Sign in to open your certificate workspace.</p>
+        <form class="login-form" onsubmit="handleMasterLogin(event)">
+          <label class="ov-field"><span>Username</span>
+            <input type="text" id="master-username" required autocomplete="username"></label>
+          <label class="ov-field"><span>Password</span>
+            <span class="ov-pass"><input type="password" id="master-password" required autocomplete="current-password">
+            <button type="button" onclick="ovTogglePass(this)">Show</button></span></label>
+          <button type="submit" class="ov-submit">Sign in</button>
+          <p id="login-error" class="login-error">Invalid Username or Password</p>
+        </form>
+        <p class="ov-foot">Works offline. Your data stays on this computer.</p>
+      </div>
+    </div>
+  </section>
+
+  <div id="master-app" class="desktop-shell" style="display: none;">
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar__brand">
+        <div class="sidebar__brand-mark">
+          OC
+        </div>
+        <div>
+          <h2>Office</h2>
+          <p class="sidebar__subcopy">Unified Certificate System</p>
+        </div>
+      </div>
+
+      <div class="sidebar__status">
+        <span class="status-dot"></span>
+        <div>
+          <strong>Local Secure Mode</strong>
+          <p>Offline-friendly operations for school administration.</p>
+        </div>
+      </div>
+
+      <div class="sidebar__group">
+        <p class="sidebar__group-title">Overview</p>
+        <button type="button" class="nav-item nav-item--home active" id="nav-home" onclick="switchModule('home', this)">
+          <span class="nav-item__body">
+            <strong>Dashboard Home</strong>
+            <small>Overview and quick launch</small>
+          </span>
+        </button>
+      </div>
+
+      <div class="sidebar__group">
+        <p class="sidebar__group-title">Bonafide Certificate</p>
+        <button type="button" class="nav-item" id="nav-m1" onclick="switchModule('m1', this)">
+          <span class="nav-item__icon">CSV</span>
+          <span class="nav-item__body">
+            <strong>Using CSV File</strong>
+            <small>Search and save in CSV workspace</small>
+          </span>
+        </button>
+        <button type="button" class="nav-item" id="nav-m2" onclick="switchModule('m2', this)">
+          <span class="nav-item__icon">XLS</span>
+          <span class="nav-item__body">
+            <strong>Using Excel File</strong>
+            <small>Open workbook and edit records</small>
+          </span>
+        </button>
+      </div>
+
+      <div class="sidebar__group">
+        <p class="sidebar__group-title">Other Certificates</p>
+        <button type="button" class="nav-item" id="nav-m3" onclick="switchModule('m3', this)">
+          <span class="nav-item__icon">CA</span>
+          <span class="nav-item__body">
+            <strong>Conduct & Attendance</strong>
+            <small>Import, fill, and print certificates</small>
+          </span>
+        </button>
+        <button type="button" class="nav-item" id="nav-about" onclick="switchModule('about', this)">
+          <span class="nav-item__icon">i</span>
+          <span class="nav-item__body">
+            <strong>About</strong>
+            <small>Developer and contact information</small>
+          </span>
+        </button>
+      </div>
+
+      <div class="sidebar__footer">
+        <button type="button" class="nav-item nav-item--danger" onclick="location.reload()">
+          <span class="nav-item__icon">OUT</span>
+          <span class="nav-item__body">
+            <strong>Secure Logout</strong>
+            <small>Exit the admin session</small>
+          </span>
+        </button>
+      </div>
+    </aside>
+
+    <button type="button" id="sidebar-overlay" class="sidebar-overlay" aria-label="Close navigation" onclick="toggleSidebar(false)"></button>
+
+    <section class="workspace-shell">
+      <header class="workspace-topbar print-hide">
+        <div class="workspace-topbar__start">
+          <button type="button" class="sidebar-toggle" aria-label="Toggle navigation" onclick="toggleSidebar()">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <div>
+            <p id="workspace-breadcrumb" class="workspace-kicker">Unified Certificate System</p>
+            <h1 id="module-title">Dashboard Overview</h1>
+            <p id="module-subtitle">
+              Monitor certificate operations, load student data, and print official documents from one desktop workspace.
+            </p>
+          </div>
+        </div>
+
+        <div class="workspace-topbar__end">
+          <div class="topbar-chip">
+            <span class="status-dot"></span>
+            <span>System Ready</span>
+          </div>
+          <div class="topbar-card">
+            <span>Today</span>
+            <strong id="system-date">19 Mar 2026</strong>
+          </div>
+          <div class="topbar-card topbar-card--accent">
+            <span>Profiles</span>
+            <strong>CSV / Excel / A4</strong>
+          </div>
+        </div>
+      </header>
+
+      <main id="main-content" class="workspace-main">
+        <div id="module-home" class="module active">
+          <div class="ov-home">
+            <section class="ov-hero">
+              <div>
+                <h2><span id="ov-greeting">Welcome</span></h2>
+                <p>Pick a certificate to start. Load your student file, search by EMIS number, check the details and print.</p>
+                <span class="dashboard-school-line" hidden></span><span class="dashboard-school-line dashboard-school-line--sub" hidden></span>
+              </div>
+              <div class="ov-clock"><strong id="ov-time">--:--</strong><span id="ov-date"></span></div>
+            </section>
+
+            <section class="ov-tiles" aria-label="Certificates">
+              <button type="button" class="ov-tile ov-tile--csv" onclick="ovLaunch('m1')">
+                <span class="ov-tile__tag">Bonafide &middot; CSV</span>
+                <h3>Bonafide from a CSV file</h3>
+                <p>Open a CSV student list, search by EMIS number, update details and print.</p>
+                <span class="ov-tile__go">Open workspace</span>
+              </button>
+              <button type="button" class="ov-tile" onclick="ovLaunch('m2')">
+                <span class="ov-tile__tag">Bonafide &middot; Excel</span>
+                <h3>Bonafide from an Excel file</h3>
+                <p>Open a workbook, find a student by EMIS or name, edit and save back to the file.</p>
+                <span class="ov-tile__go">Open workspace</span>
+              </button>
+              <button type="button" class="ov-tile ov-tile--ca" onclick="ovLaunch('m3')">
+                <span class="ov-tile__tag">Conduct &amp; Attendance</span>
+                <h3>Conduct and attendance</h3>
+                <p>Import academic data, fill the remaining fields and print both certificates on one page.</p>
+                <span class="ov-tile__go">Open workspace</span>
+              </button>
+            </section>
+
+            <section class="ov-row">
+              <article class="ov-panel">
+                <h3>How it works</h3>
+                <ol class="ov-steps">
+                  <li>Open your CSV or Excel student file.</li>
+                  <li>Search the student by EMIS number and check the details.</li>
+                  <li>Click Print and choose A4 paper.</li>
+                </ol>
+              </article>
+              <article class="ov-panel">
+                <h3>Good to know</h3>
+                <ul class="ov-facts">
+                  <li>Works without internet</li>
+                  <li>Student data stays on this computer</li>
+                  <li>Print layout is always A4</li>
+                </ul>
+              </article>
+            </section>
+          </div>
+        </div>
+        <div id="module-csv" class="module">
+          <section class="module-shell">
+            <div class="command-panel print-hide-override">
+              <div class="command-panel__header">
+                <div>
+                  <p class="eyebrow">Bonafide Certificate</p>
+                  <h2>CSV Record Workspace</h2>
+                  <p>Load local CSV data, search student records by EMIS, update the form, and print an official certificate.</p>
+                </div>
+                <div id="c1_db-status" class="command-status">System Ready.</div>
+              </div>
+
+              <div class="command-panel__body">
+                <div class="action-row">
+                  <button type="button" class="action-btn theme-violet" onclick="c1_openFile()">Open CSV</button>
+                  <button type="button" class="action-btn theme-green" onclick="c1_saveFile()">Save to Disk</button>
+                  <button type="button" class="action-btn theme-blue" onclick="c1_saveFileAs()">New Template</button>
+                  <button type="button" class="action-btn theme-emerald" onclick="window.print()">Print</button>
+                  <button type="button" class="action-btn theme-slate" onclick="c1_clearForm()">Clear</button>
+                  <button type="button" class="action-btn theme-red ml-auto" onclick="goHome()">Exit</button>
+                </div>
+
+                <div class="search-row">
+                  <label for="c1_emisSearch">Search EMIS</label>
+                  <input type="text" id="c1_emisSearch" class="field-input" placeholder="Enter EMIS number">
+                  <button type="button" class="action-btn theme-neutral" onclick="c1_searchStudent()">Search</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="preview-layout">
+              <aside class="stage-aside print-hide-override">
+                <article class="stage-note">
+                  <p class="eyebrow">Workspace Notes</p>
+                  <h3>CSV workflow</h3>
+                  <p>Open a CSV database, search by EMIS, review student details, and save changes back to disk.</p>
+                </article>
+                <article class="stage-note">
+                  <p class="eyebrow">Document Status</p>
+                  <h3>A4 certificate preview</h3>
+                  <p>The paper layout stays isolated in the preview stage so office controls do not affect printing.</p>
+                </article>
+              </aside>
+
+              <section class="document-stage">
+                <div class="stage-header print-hide-override">
+                  <div>
+                    <p class="eyebrow">Live Preview</p>
+                    <h3>Bonafide Certificate</h3>
+                  </div>
+                  <span class="stage-badge">A4 Print Safe</span>
+                </div>
+
+                <div class="paper-board">
+                  <div class="bonafide-wrapper">
+                    <header>
+                      <img src="assets/tnimage.png" alt="TN Seal" class="logo-img">
+                      <div class="header-text">
+                        <div class="line1">GOVERNMENT OF TAMIL NADU</div>
+                        <div class="line2">DEPARTMENT OF SCHOOL EDUCATION</div>
+                        <div class="line3">SCHOOL CODE: 33250800405</div>
+                        <div class="line4">GOVERNMENT HIGHER SECONDARY SCHOOL</div>
+                        <div class="line5">PANNAIPURAM - 625524</div>
+                        <div class="line5">TALUK: UTHAMAPALAYAM | DISTRICT: THENI</div>
+                      </div>
+                      <div class="date-box-spacer" aria-hidden="true"></div>
+                    </header>
+
+                    <div class="cert-title">BONAFIDE CERTIFICATE</div>
+
+                    <div class="content-area">
+                      <div class="form-col">
+                        <div class="f-row"><label>Student Name</label><input type="text" id="c1_stName"></div>
+                        <div class="f-row"><label>Aadhar Card Number</label><input type="text" id="c1_stAadhar"></div>
+                        <div class="f-row"><label>Gender</label><input type="text" id="c1_stGender"></div>
+                        <div class="f-row"><label>Date of Birth</label><input type="text" id="c1_stDob"></div>
+                        <div class="f-row"><label>Father Name</label><input type="text" id="c1_stFatherName"></div>
+                        <div class="f-row"><label>Mother Name</label><input type="text" id="c1_stMotherName"></div>
+                        <div class="f-row"><label>Admission No</label><input type="text" id="c1_stAdminNo"></div>
+                        <div class="f-row"><label>Date of Admission</label><input type="text" id="c1_stDateAdmin"></div>
+                        <div class="f-row"><label>Academic Year</label><input type="text" id="c1_stYear"></div>
+                        <div class="f-row"><label>Class Studying/Studied</label><input type="text" id="c1_stClass"></div>
+                        <div class="f-row"><label>Section</label><input type="text" id="c1_stSection"></div>
+                        <div class="f-row"><label>Medium</label><input type="text" id="c1_stMedium"></div>
+                        <div class="f-row"><label>Contact No</label><input type="text" id="c1_stContact"></div>
+                        <div class="f-row"><label>Email ID</label><input type="text" id="c1_stEmail"></div>
+                        <div class="f-row"><label>Address</label><textarea id="c1_stAddress"></textarea></div>
+                        <div class="f-row"><label>Taluk</label><input type="text" id="c1_stTaluk"></div>
+                        <div class="f-row"><label>District</label><input type="text" id="c1_stDistrict"></div>
+                        <div class="f-row"><label>Pincode</label><input type="text" id="c1_stPincode"></div>
+                      </div>
+
+                      <div class="photo-col">
+                        <div class="emis-box" id="c1_emisDisplay">EMIS ID: ----</div>
+                        <div class="photo-box-inner" id="c1_photoDisplay" onclick="document.getElementById('c1_hiddenPhotoInput').click()">
+                          <span id="c1_photoPlaceholder">Click to<br>Upload Photo</span>
+                        </div>
+                        <input type="file" id="c1_hiddenPhotoInput" accept="image/*" hidden onchange="c1_handlePhotoUpload(this)">
+                        <input type="hidden" id="c1_currentEmisId">
+                      </div>
+                    </div>
+
+                    <div class="certify-text">I certify that the above details are found correct as per school records.</div>
+
+                    <div class="bottom-section">
+                      <div class="signatures">
+                        <div>OFFICE SEAL</div>
+                        <div class="hm-sig">Headmaster<br>Govt. Hr. Sec. School,<br>Pannaipuram - 625524,<br>Theni District.</div>
+                      </div>
+                      <div class="print-footer">
+                        <div>Email: hss1603007@gmail.com</div>
+                        <div>GHSS, Kombai Main Road, Pannaipuram - 625524.</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </section>
+        </div>
+        <div id="module-excel" class="module">
+          <section class="module-shell">
+            <div class="command-panel print-hide-override">
+              <div class="command-panel__header">
+                <div>
+                  <p class="eyebrow">Bonafide Certificate</p>
+                  <h2>Excel Record Workspace</h2>
+                  <p>Open the student workbook, search by EMIS or name, update details, and save the edited workbook locally.</p>
+                </div>
+                <div id="c2_file-status" class="command-status command-status--muted">Not Connected</div>
+              </div>
+
+              <div class="command-panel__body">
+                <div class="action-row">
+                  <button type="button" class="action-btn theme-orange" onclick="c2_openDatabase()">Open Excel</button>
+                  <button type="button" class="action-btn theme-blue" onclick="c2_newTemplate()">New Template</button>
+                  <button type="button" class="action-btn theme-red" onclick="c2_saveToDisk()">Save to Disk</button>
+                  <button type="button" class="action-btn theme-emerald" onclick="window.print()">Print</button>
+                  <button type="button" class="action-btn theme-slate" onclick="c2_clearForm()">Clear</button>
+                  <button type="button" class="action-btn theme-red ml-auto" onclick="goHome()">Exit</button>
+                </div>
+
+                <div class="search-row">
+                  <label for="c2_emisSearch">Search EMIS / Name</label>
+                  <input type="text" id="c2_emisSearch" class="field-input" placeholder="Enter EMIS or student name">
+                  <button type="button" class="action-btn theme-neutral" onclick="c2_searchLocal()">Search</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="preview-layout">
+              <aside class="stage-aside print-hide-override">
+                <article class="stage-note">
+                  <p class="eyebrow">Workbook Mode</p>
+                  <h3>Excel linked editing</h3>
+                  <p>Search students from the active spreadsheet, modify the form, and save back into the same workbook.</p>
+                </article>
+                <article class="stage-note">
+                  <p class="eyebrow">Template Support</p>
+                  <h3>Create a starter sheet</h3>
+                  <p>Generate a blank Excel template instantly when a new student database is needed.</p>
+                </article>
+              </aside>
+
+              <section class="document-stage">
+                <div class="stage-header print-hide-override">
+                  <div>
+                    <p class="eyebrow">Live Preview</p>
+                    <h3>Bonafide Certificate</h3>
+                  </div>
+                  <span class="stage-badge">Workbook Connected</span>
+                </div>
+
+                <div class="paper-board">
+                  <div class="bonafide-wrapper">
+                    <header>
+                      <img src="assets/tnimage.png" alt="TN Seal" class="logo-img">
+                      <div class="header-text">
+                        <div class="line1">GOVERNMENT OF TAMIL NADU</div>
+                        <div class="line2">DEPARTMENT OF SCHOOL EDUCATION</div>
+                        <div class="line3">SCHOOL CODE: 33250800405</div>
+                        <div class="line4">GOVERNMENT HIGHER SECONDARY SCHOOL</div>
+                        <div class="line5">PANNAIPURAM - 625524</div>
+                        <div class="line5">TALUK: UTHAMAPALAYAM | DISTRICT: THENI</div>
+                      </div>
+                      <div class="date-box-spacer" aria-hidden="true"></div>
+                    </header>
+
+                    <div class="cert-title">BONAFIDE CERTIFICATE</div>
+
+                    <div class="content-area">
+                      <div class="form-col">
+                        <div class="f-row"><label>Student Name</label><input type="text" id="c2_stName"></div>
+                        <div class="f-row"><label>Aadhar Card Number</label><input type="text" id="c2_stAadhar"></div>
+                        <div class="f-row"><label>Gender</label><input type="text" id="c2_stGender"></div>
+                        <div class="f-row"><label>Date of Birth</label><input type="text" id="c2_stDob"></div>
+                        <div class="f-row"><label>Father Name</label><input type="text" id="c2_stFatherName"></div>
+                        <div class="f-row"><label>Mother Name</label><input type="text" id="c2_stMotherName"></div>
+                        <div class="f-row"><label>Admission No</label><input type="text" id="c2_stAdminNo"></div>
+                        <div class="f-row"><label>Date of Admission</label><input type="text" id="c2_stDateAdmin"></div>
+                        <div class="f-row"><label>Academic Year</label><input type="text" id="c2_stYear"></div>
+                        <div class="f-row"><label>Class Studying/Studied</label><input type="text" id="c2_stClass"></div>
+                        <div class="f-row"><label>Section</label><input type="text" id="c2_stSection"></div>
+                        <div class="f-row"><label>Medium</label><input type="text" id="c2_stMedium"></div>
+                        <div class="f-row"><label>Contact No</label><input type="text" id="c2_stContact"></div>
+                        <div class="f-row"><label>Email ID</label><input type="text" id="c2_stEmail"></div>
+                        <div class="f-row"><label>Address</label><textarea id="c2_stAddress"></textarea></div>
+                        <div class="f-row"><label>Taluk</label><input type="text" id="c2_stTaluk"></div>
+                        <div class="f-row"><label>District</label><input type="text" id="c2_stDistrict"></div>
+                        <div class="f-row"><label>Pincode</label><input type="text" id="c2_stPincode"></div>
+                      </div>
+
+                      <div class="photo-col">
+                        <div class="emis-box" id="c2_emisDisplay">EMIS ID: ----</div>
+                        <div class="photo-box-inner" id="c2_photoDisplay" onclick="document.getElementById('c2_hiddenPhotoInput').click()">
+                          <span id="c2_photoPlaceholder">Click to<br>Upload Photo</span>
+                        </div>
+                        <input type="file" id="c2_hiddenPhotoInput" accept="image/*" hidden onchange="c2_handlePhotoUpload(this)">
+                        <input type="hidden" id="c2_currentEmisId">
+                      </div>
+                    </div>
+
+                    <div class="certify-text">I certify that the above details are found correct as per school records.</div>
+
+                    <div class="bottom-section">
+                      <div class="signatures">
+                        <div>OFFICE SEAL</div>
+                        <div class="hm-sig">Headmaster<br>Govt. Hr. Sec. School,<br>Pannaipuram - 625524,<br>Theni District.</div>
+                      </div>
+                      <div class="print-footer">
+                        <div>Email: hss1603007@gmail.com</div>
+                        <div>GHSS, Kombai Main Road, Pannaipuram - 625524.</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </section>
+        </div>
+
+        <div id="module-conduct" class="module">
+          <section class="module-shell conduct-wrapper">
+            <div class="conduct-layout">
+              <div class="input-form input-form--conduct">
+                <div class="conduct-toolbar print-hide-override">
+                  <div class="conduct-toolbar__row">
+                    <input type="file" id="c3_excelFileInput" accept=".xlsx, .xls, .csv" hidden onchange="c3_handleExcelUpload(event)">
+                    <button type="button" class="action-btn theme-violet" onclick="document.getElementById('c3_excelFileInput').click()">Import Excel File</button>
+                    <button type="button" class="action-btn theme-emerald" onclick="window.print()">Print Certificates</button>
+                    <button type="button" class="action-btn theme-slate" onclick="c3_clearAll()">Clear</button>
+                    <button type="button" class="action-btn theme-red ml-auto" onclick="goHome()">Exit</button>
+                  </div>
+
+                  <div class="conduct-toolbar__search">
+                    <label for="c3_emisSearch">Search EMIS</label>
+                    <input type="text" id="c3_emisSearch" class="field-input" placeholder="Enter EMIS number">
+                    <button type="button" class="action-btn theme-neutral" onclick="c3_searchStudent()">Search</button>
+                  </div>
+                </div>
+
+                <div id="c3_statusBar" class="status-banner"></div>
+
+                <div class="form-panel-header form-panel-header--conduct">
+                  <p class="eyebrow">Certificate Data Entry</p>
+                  <h3>Review fetched values and complete the required fields</h3>
+                </div>
+
+                <div class="form-block form-block--read">
+                  <div class="form-block__title">
+                    <span>Auto-fetched from Excel</span>
+                    <small>Read-only fields</small>
+                  </div>
+                  <div class="data-grid">
+                    <label class="data-field"><span>EMIS No</span><input type="text" id="c3_emisNo" readonly></label>
+                    <label class="data-field"><span>Admission No</span><input type="text" id="c3_admnNo" readonly></label>
+                    <label class="data-field"><span>Student Name</span><input type="text" id="c3_studentName" readonly></label>
+                    <label class="data-field"><span>Class</span><input type="text" id="c3_className" readonly></label>
+                    <label class="data-field"><span>Section</span><input type="text" id="c3_sectionName" readonly></label>
+                    <label class="data-field"><span>Study Period From</span><input type="text" id="c3_studyFrom" readonly></label>
+                    <label class="data-field"><span>Study Period To</span><input type="text" id="c3_studyTo" readonly></label>
+                    <label class="data-field"><span>Academic Year</span><input type="text" id="c3_academicYear" readonly></label>
+                    <label class="data-field"><span>Class Teacher Name</span><input type="text" id="c3_teacherName" readonly></label>
+                  </div>
+                </div>
+
+                <div class="form-block form-block--manual">
+                  <div class="form-block__title">
+                    <span>Manual input required</span>
+                    <small>Values used in final certificates</small>
+                  </div>
+                  <div class="data-grid">
+                    <label class="data-field data-field--manual"><span>T.C. Number</span><input type="text" id="c3_tcNo" class="manual-input" placeholder="Enter T.C. No"></label>
+                    <label class="data-field data-field--manual"><span>Character & Conduct</span><input type="text" id="c3_conduct" class="manual-input" placeholder="Example: Good"></label>
+                    <label class="data-field data-field--manual"><span>Attendance Percentage</span><input type="text" id="c3_attendance" class="manual-input" placeholder="Example: 98%"></label>
+                    <label class="data-field data-field--manual"><span>Place</span><input type="text" id="c3_place" class="manual-input" value=""></label>
+                    <label class="data-field data-field--manual"><span>Date</span><input type="date" id="c3_certDate1" class="manual-input" onchange="c3_updateCertificates()"></label>
+                  </div>
+                </div>
+
+                <div class="form-panel-actions">
+                  <button type="button" class="primary-btn" onclick="c3_updateCertificates()">Generate Certificates</button>
+                </div>
+              </div>
+
+              <div class="conduct-preview">
+                <div class="stage-header stage-header--conduct print-hide-override">
+                  <div>
+                    <p class="eyebrow">Live Preview</p>
+                    <h3>Conduct & Attendance Certificates</h3>
+                  </div>
+                  <span class="stage-badge">Dual Print Layout</span>
+                </div>
+
+                <div class="certificates-page">
+                  <div class="conduct-certificate">
+                    <div class="m3-header">
+                      <img src="assets/tnimage.png" alt="TN Seal" class="m3-logo-img">
+                      <div class="m3-header-text">
+                        <div class="m3-main-title">GOVERNMENT OF TAMIL NADU</div>
+                        <div class="m3-sub-title">DEPARTMENT OF SCHOOL EDUCATION</div>
+                        <div class="m3-school-code">SCHOOL CODE: 33250800405</div>
+                        <div class="m3-school-name">GOVERNMENT HIGHER SECONDARY SCHOOL</div>
+                        <div class="m3-address">PANNAIPURAM - 625524</div>
+                        <div class="m3-address">TALUK: UTHAMAPALAYAM | DISTRICT: THENI</div>
+                      </div>
+                      <div class="m3-date-box-spacer" aria-hidden="true"></div>
+                    </div>
+
+                    <div class="certificate-meta">
+                      <div class="certificate-meta__line">
+                        <div class="certificate-meta__entry">EMIS NO: <span id="c3_displayEmis1"></span></div>
+                        <div class="certificate-meta__entry certificate-meta__entry--right">T.C.No: <span id="c3_displayTcNo1"></span></div>
+                      </div>
+                      <div class="certificate-meta__line certificate-meta__line--single">
+                        <div class="certificate-meta__entry">ADMN NO: <span id="c3_displayAdmn1"></span></div>
+                      </div>
+                    </div>
+                    <div class="certificate-title">CONDUCT CERTIFICATE</div>
+                    <div class="certificate-body">
+                      This is to certify that <span id="c3_genderPrefix1">Selvan/Selvi</span>
+                      <span class="input-field input-field--wide" id="c3_displayName1"></span> of
+                      <span class="input-field input-field--small" id="c3_displayClass1"></span> Std
+                      <span class="input-field input-field--small" id="c3_displaySection1"></span> Section was a student of this institution for the period from standard
+                      <span class="input-field input-field--date" id="c3_displayStudyFrom1"></span> to
+                      <span class="input-field input-field--date" id="c3_displayStudyTo1"></span>. During his / her stay in this institution, character and conduct were
+                      <span class="input-field input-field--medium" id="c3_displayConduct"></span>.
+                    </div>
+                    <div class="certificate-signature certificate-signature--conduct">
+                      <div class="signature-block signature-block--place">
+                        <div>Place: <span id="c3_displayPlace"></span></div>
+                        <div>Date: <span id="c3_displayDate"></span></div>
+                      </div>
+                      <div class="signature-block signature-block--headmaster">Headmaster<br>Govt Hr Sec School<br>Pannaipuram - 625524<br>Theni</div>
+                    </div>
+                  </div>
+
+                  <div class="cut-line">- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</div>
+
+                  <div class="attendance-certificate">
+                    <div class="m3-header">
+                      <img src="assets/tnimage.png" alt="TN Seal" class="m3-logo-img">
+                      <div class="m3-header-text">
+                        <div class="m3-main-title">GOVERNMENT OF TAMIL NADU</div>
+                        <div class="m3-sub-title">DEPARTMENT OF SCHOOL EDUCATION</div>
+                        <div class="m3-school-code">SCHOOL CODE: 33250800405</div>
+                        <div class="m3-school-name">GOVERNMENT HIGHER SECONDARY SCHOOL</div>
+                        <div class="m3-address">PANNAIPURAM - 625524</div>
+                        <div class="m3-address">TALUK: UTHAMAPALAYAM | DISTRICT: THENI</div>
+                      </div>
+                      <div class="m3-date-box-spacer" aria-hidden="true"></div>
+                    </div>
+
+                    <div class="certificate-meta">
+                      <div class="certificate-meta__line">
+                        <div class="certificate-meta__entry">EMIS NO: <span id="c3_displayEmis2"></span></div>
+                        <div class="certificate-meta__entry certificate-meta__entry--right">T.C.No: <span id="c3_displayTcNo2"></span></div>
+                      </div>
+                      <div class="certificate-meta__line certificate-meta__line--single">
+                        <div class="certificate-meta__entry">ADMN NO: <span id="c3_displayAdmn2"></span></div>
+                      </div>
+                    </div>
+                    <div class="certificate-title">ATTENDANCE CERTIFICATE</div>
+                    <div class="certificate-body">
+                      This is to certify that <span id="c3_genderPrefix2">Selvan/Selvi</span>
+                      <span class="input-field input-field--wide" id="c3_displayName2"></span> had completed the Higher Secondary Course (+2) during 
+                      <span class="input-field input-field--medium" id="c3_displayYear"></span> and his / her attendance is
+                      <span class="input-field input-field--small" id="c3_displayAttendance"></span>.
+                    </div>
+                    <div class="certificate-signature certificate-signature--attendance">
+                      <div class="signature-block signature-block--teacher">Class Teacher<br><span id="c3_displayTeacher" class="uppercase"></span></div>
+                      <div class="signature-block signature-block--headmaster">Headmaster<br>Govt Hr Sec School<br>Pannaipuram - 625524<br>Theni</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div id="module-about" class="module">
+          <section class="about-page">
+            <div class="about-page__heading">
+              <div class="about-page__icon" aria-hidden="true">🎓</div>
+              <p class="eyebrow">Office Certificate App</p>
+              <h2>App Developer Info</h2>
+            </div>
+
+            <article class="about-card">
+              <p class="about-card__eyebrow">Developed by</p>
+              <div class="about-card__profile">
+                <div class="about-card__profile-icon" aria-hidden="true">▤</div>
+                <div>
+                  <h3>P.SIVA M.Sc., B.Ed., M.Phil., MCA.,</h3>
+                  <p class="about-card__role">PG Computer Science Teacher</p>
+                  <p class="about-card__affiliation">Govt Hr Sec School,Pannaipuram<br>Theni District</p>
+                </div>
+              </div>
+              <div class="about-card__contact">
+                <div class="about-card__phone-icon" aria-hidden="true">☎</div>
+                <div class="about-card__phone-copy">
+                  <span>Cell No</span>
+                  <strong>7603930445</strong>
+                </div>
+                <div class="about-card__actions">
+                  <button type="button" class="about-action about-action--copy" onclick="copyAboutPhone()">Copy</button>
+                  <a class="about-action about-action--whatsapp" href="https://wa.me/7603930445" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                </div>
+              </div>
+            </article>
+          </section>
+        </div>
+      </main>
+    </section>
+  </div>
+<div style="padding:30px; background:#f5f5f5;">
+
+ 
+
+
+
+</body>
+</html>

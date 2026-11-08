@@ -1,0 +1,63 @@
+/* Office Certificate App - login + dashboard redesign (loads after styles.css) */
+:root{--ov-ink:#14203d;--ov-indigo:#27409a;--ov-sky:#e9eefb;--ov-paper:#f4f6fa;--ov-line:#d9e0ee;--ov-amber:#f0a81c;--ov-teal:#0e8f78;--ov-text:#1c2540;--ov-mute:#5d6987;
+--ov-serif:Cambria,Georgia,"Times New Roman",serif;--ov-sans:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
+
+/* ---------- LOGIN ---------- */
+#master-login.ov-login{display:grid;grid-template-columns:1.1fr 1fr;min-height:100vh;padding:0;margin:0;background:var(--ov-paper);font-family:var(--ov-sans)}
+.ov-login__art{position:relative;overflow:hidden;color:#fff;padding:clamp(28px,5vw,72px);display:flex;flex-direction:column;justify-content:space-between;gap:32px;
+background:radial-gradient(900px 500px at 10% 0%,#2f4bb3 0%,transparent 60%),linear-gradient(160deg,#16244d,#0f1830)}
+.ov-brand{display:flex;align-items:center;gap:14px;font-weight:700;letter-spacing:.02em}
+.ov-brand__mark{width:44px;height:44px;border-radius:12px;background:var(--ov-amber);color:#2a1d00;display:grid;place-items:center;font-weight:800}
+.ov-login__art h1{font-family:var(--ov-serif);font-size:clamp(30px,3.6vw,50px);line-height:1.12;margin:0 0 14px;max-width:15em;color:#fff}
+.ov-login__art p{margin:0;max-width:34em;line-height:1.65;color:#c9d3f0}
+.ov-sheet{position:relative;align-self:flex-start;width:min(360px,100%);background:#fff;color:var(--ov-ink);border-radius:10px;padding:22px 24px 26px;box-shadow:0 30px 60px rgba(0,0,0,.35);transform:rotate(-2.5deg);animation:ovSheet .9s cubic-bezier(.2,.7,.2,1) both}
+.ov-sheet small{display:block;text-align:center;font-size:10px;letter-spacing:.14em;color:var(--ov-mute)}
+.ov-sheet b{display:block;text-align:center;font-family:var(--ov-serif);font-size:18px;margin:6px 0 14px}
+.ov-sheet i{display:block;height:7px;border-radius:4px;background:#e4e9f5;margin:9px 0}
+.ov-sheet i:nth-of-type(2){width:82%}.ov-sheet i:nth-of-type(3){width:64%}
+.ov-sheet em{position:absolute;right:18px;bottom:-22px;width:62px;height:62px;border-radius:50%;background:var(--ov-amber);border:4px solid #fff;display:grid;place-items:center;font-style:normal;font-weight:800;color:#2a1d00;box-shadow:0 8px 20px rgba(0,0,0,.25)}
+@keyframes ovSheet{from{opacity:0;transform:translateY(26px) rotate(-6deg)}}
+.ov-login__panel{display:grid;place-items:center;padding:clamp(24px,4vw,64px)}
+.ov-card{width:min(420px,100%)}
+.ov-card h2{font-family:var(--ov-serif);font-size:32px;margin:0 0 6px;color:var(--ov-ink)}
+.ov-card>p{margin:0 0 28px;color:var(--ov-mute)}
+.ov-field{display:block;margin-bottom:18px}
+.ov-field>span{display:block;font-size:13px;font-weight:600;color:var(--ov-text);margin-bottom:6px}
+.ov-field input{width:100%;box-sizing:border-box;padding:13px 14px;border:1.5px solid var(--ov-line);border-radius:10px;background:#fff;font:inherit;color:var(--ov-text);transition:border-color .15s,box-shadow .15s}
+.ov-field input:focus{outline:none;border-color:var(--ov-indigo);box-shadow:0 0 0 4px rgba(39,64,154,.15)}
+.ov-pass{position:relative}.ov-pass input{padding-right:70px}
+.ov-pass button{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:none;color:var(--ov-indigo);font-weight:600;cursor:pointer;padding:6px 8px;border-radius:6px}
+.ov-submit{width:100%;padding:14px;border:0;border-radius:10px;background:var(--ov-indigo);color:#fff;font:600 15px var(--ov-sans);cursor:pointer;transition:background .15s,transform .05s}
+.ov-submit:hover{background:#1f3484}.ov-submit:active{transform:translateY(1px)}
+.ov-submit:focus-visible,.ov-pass button:focus-visible,.ov-tile:focus-visible{outline:3px solid var(--ov-amber);outline-offset:2px}
+.ov-foot{margin-top:22px;font-size:12.5px;color:var(--ov-mute);text-align:center}
+
+/* ---------- DASHBOARD ---------- */
+.ov-home{display:grid;gap:22px;font-family:var(--ov-sans);color:var(--ov-text)}
+.ov-hero{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px;padding:30px 34px;border-radius:18px;color:#fff;
+background:radial-gradient(600px 260px at 90% 0%,rgba(240,168,28,.28),transparent 70%),linear-gradient(135deg,#1a2b66,#14203d)}
+.ov-hero h2{font-family:var(--ov-serif);font-size:clamp(26px,3vw,38px);margin:0 0 8px;color:#fff}
+.ov-hero p{margin:0;color:#c9d3f0;max-width:36em;line-height:1.6}
+.ov-clock{text-align:right}.ov-clock strong{display:block;font-family:var(--ov-serif);font-size:44px;line-height:1;font-variant-numeric:tabular-nums}
+.ov-clock span{color:#c9d3f0;font-size:14px}
+.ov-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.ov-tile{text-align:left;cursor:pointer;border:1.5px solid var(--ov-line);background:#fff;border-radius:16px;padding:22px;font:inherit;color:inherit;display:flex;flex-direction:column;gap:10px;transition:border-color .15s,box-shadow .15s,transform .15s}
+.ov-tile:hover{border-color:var(--ov-indigo);box-shadow:0 14px 30px rgba(39,64,154,.14);transform:translateY(-2px)}
+.ov-tile__tag{align-self:flex-start;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--ov-sky);color:var(--ov-indigo)}
+.ov-tile--csv .ov-tile__tag{background:#e5f5f1;color:var(--ov-teal)}.ov-tile--ca .ov-tile__tag{background:#fdf1d6;color:#8a5b00}
+.ov-tile h3{margin:0;font-family:var(--ov-serif);font-size:21px;color:var(--ov-ink)}
+.ov-tile p{margin:0;color:var(--ov-mute);line-height:1.55;font-size:14px}
+.ov-tile__go{margin-top:auto;font-weight:600;color:var(--ov-indigo);font-size:14px}
+.ov-row{display:grid;grid-template-columns:1.4fr 1fr;gap:18px}
+.ov-panel{background:#fff;border:1.5px solid var(--ov-line);border-radius:16px;padding:24px}
+.ov-panel h3{margin:0 0 14px;font-family:var(--ov-serif);font-size:20px;color:var(--ov-ink)}
+.ov-steps{list-style:none;margin:0;padding:0;display:grid;gap:14px;counter-reset:s}
+.ov-steps li{counter-increment:s;display:flex;gap:14px;align-items:flex-start;line-height:1.5;color:var(--ov-text)}
+.ov-steps li::before{content:counter(s);flex:none;width:28px;height:28px;border-radius:50%;background:var(--ov-ink);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700}
+.ov-facts{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.ov-facts li{display:flex;gap:10px;align-items:center;color:var(--ov-text);font-size:14.5px}
+.ov-facts li::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--ov-teal);flex:none}
+
+@media(max-width:900px){#master-login.ov-login{grid-template-columns:1fr}.ov-login__art{display:none}.ov-row{grid-template-columns:1fr}.ov-clock{text-align:left}}
+@media(prefers-reduced-motion:reduce){.ov-sheet{animation:none}.ov-tile{transition:none}}
+@media print{.ov-home{display:none}}

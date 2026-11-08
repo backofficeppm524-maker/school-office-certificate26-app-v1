@@ -1,0 +1,60 @@
+/* Office Certificate App - login "software panel" redesign. Loads after login-dashboard.css */
+#master-login.ov2{--bg:#0b1226;--panel:#111c3a;--edge:rgba(160,180,255,.16);--tx:#e8ecfa;--mute:#93a0c8;--amber:#f0a81c;--teal:#2dd4b0;--indigo:#27409a;
+display:grid;place-items:center;min-height:100vh;padding:clamp(12px,3vw,40px);margin:0;box-sizing:border-box;font-family:"Segoe UI",system-ui,Roboto,Arial,sans-serif;
+background:radial-gradient(800px 500px at 15% 10%,rgba(60,90,210,.35),transparent 60%),radial-gradient(700px 500px at 90% 95%,rgba(240,168,28,.14),transparent 60%),var(--bg);overflow:auto}
+#master-login.ov2::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.5;
+background-image:linear-gradient(var(--edge) 1px,transparent 1px),linear-gradient(90deg,var(--edge) 1px,transparent 1px);background-size:56px 56px;
+-webkit-mask-image:radial-gradient(circle at 30% 30%,#000,transparent 75%);mask-image:radial-gradient(circle at 30% 30%,#000,transparent 75%);animation:ov2Drift 40s linear infinite}
+@keyframes ov2Drift{to{background-position:56px 56px}}
+
+.ov2-window{position:relative;width:min(1080px,100%);display:grid;grid-template-columns:1.15fr 1fr;border-radius:20px;overflow:hidden;border:1px solid var(--edge);background:var(--panel);box-shadow:0 40px 100px rgba(0,0,0,.55)}
+.ov2-bar{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:11px 20px;background:rgba(255,255,255,.04);border-bottom:1px solid var(--edge);color:var(--mute);font-size:12.5px}
+.ov2-bar b{color:var(--tx);font-weight:600}
+.ov2-live{display:flex;align-items:center;gap:8px}
+.ov2-dot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 0 rgba(45,212,176,.6);animation:ov2Pulse 2s infinite}
+@keyframes ov2Pulse{70%{box-shadow:0 0 0 9px rgba(45,212,176,0)}100%{box-shadow:0 0 0 0 rgba(45,212,176,0)}}
+
+.ov2-side{padding:clamp(24px,3.5vw,44px);color:var(--tx);display:flex;flex-direction:column;gap:26px}
+.ov2-brand{display:flex;align-items:center;gap:14px}
+.ov2-mark{width:46px;height:46px;border-radius:13px;background:var(--amber);color:#2a1d00;display:grid;place-items:center;font-weight:800;font-size:17px}
+.ov2-brand strong{display:block;font-size:17px}.ov2-brand span{font-size:12.5px;color:var(--mute)}
+.ov2-side h1{margin:0;font-family:Cambria,Georgia,serif;font-size:clamp(26px,2.9vw,38px);line-height:1.15;color:#fff;max-width:14em}
+.ov2-metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ov2-metric{padding:14px 16px;border:1px solid var(--edge);border-radius:12px;background:rgba(255,255,255,.035)}
+.ov2-metric small{display:block;color:var(--mute);font-size:12px;margin-bottom:5px}
+.ov2-metric b{font-size:17px;font-weight:600;color:#fff;font-variant-numeric:tabular-nums}
+.ov2-metric b.ok{color:var(--teal)}
+.ov2-flow{display:flex;align-items:center;gap:0;padding:16px;border:1px solid var(--edge);border-radius:12px;background:rgba(255,255,255,.035)}
+.ov2-node{flex:none;text-align:center;font-size:12.5px;color:var(--tx);line-height:1.3}
+.ov2-node i{display:block;width:34px;height:34px;margin:0 auto 6px;border-radius:10px;border:1.5px solid var(--amber);position:relative;background:rgba(240,168,28,.1)}
+.ov2-node i::after{content:"";position:absolute;inset:9px;border-radius:3px;background:var(--amber);opacity:.85}
+.ov2-link{flex:1;height:2px;margin:0 8px 20px;background:repeating-linear-gradient(90deg,var(--teal) 0 8px,transparent 8px 16px);background-size:16px 2px;animation:ov2Flow 1.2s linear infinite}
+@keyframes ov2Flow{to{background-position:16px 0}}
+.ov2-tip{min-height:2.6em;color:var(--mute);font-size:13.5px;line-height:1.55;transition:opacity .35s}
+.ov2-tip.is-out{opacity:0}
+
+.ov2-main{background:#f6f8fc;display:grid;place-items:center;padding:clamp(24px,3.5vw,48px)}
+.ov2-card{width:min(380px,100%)}
+.ov2-card h2{margin:0 0 6px;font-family:Cambria,Georgia,serif;font-size:30px;color:#14203d}
+.ov2-card>p{margin:0 0 26px;color:#5d6987;font-size:14.5px}
+.ov2-field{display:block;margin-bottom:16px}
+.ov2-field>span.ov2-lbl{display:block;font-size:13px;font-weight:600;color:#1c2540;margin-bottom:6px}
+.ov2-input{position:relative}
+.ov2-input svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:18px;height:18px;stroke:#7a86a6;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.ov2-input input{width:100%;box-sizing:border-box;padding:13px 14px 13px 42px;border:1.5px solid #d6ddee;border-radius:11px;background:#fff;font:inherit;color:#1c2540;transition:border-color .15s,box-shadow .15s}
+.ov2-input input:focus{outline:none;border-color:var(--indigo);box-shadow:0 0 0 4px rgba(39,64,154,.15)}
+.ov2-input input:focus~svg,.ov2-input:focus-within svg{stroke:var(--indigo)}
+.ov2-input button{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:none;color:var(--indigo);font-weight:600;cursor:pointer;padding:6px 8px;border-radius:6px}
+.ov2-pw input{padding-right:68px}
+.ov2-caps{display:none;margin:-6px 0 12px;font-size:12.5px;color:#9a5b00}
+.ov2-caps.on{display:block}
+.ov2-row{display:flex;align-items:center;justify-content:space-between;margin:2px 0 20px;font-size:13.5px;color:#3b4766}
+.ov2-row label{display:flex;align-items:center;gap:8px;cursor:pointer}
+.ov2-row input{width:16px;height:16px;accent-color:var(--indigo)}
+.ov2-submit{width:100%;padding:14px;border:0;border-radius:11px;background:linear-gradient(135deg,#2f4bb3,#223785);color:#fff;font:600 15px "Segoe UI",system-ui,sans-serif;cursor:pointer;box-shadow:0 10px 24px rgba(39,64,154,.3);transition:transform .08s,box-shadow .15s}
+.ov2-submit:hover{box-shadow:0 14px 30px rgba(39,64,154,.4)}.ov2-submit:active{transform:translateY(1px)}
+.ov2-submit:focus-visible,.ov2-input button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.ov2-foot{margin-top:20px;text-align:center;font-size:12.5px;color:#6a7594}
+
+@media(max-width:860px){.ov2-window{grid-template-columns:1fr}.ov2-side{display:none}}
+@media(prefers-reduced-motion:reduce){#master-login.ov2::before,.ov2-dot,.ov2-link{animation:none}.ov2-tip{transition:none}}
